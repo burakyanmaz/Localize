@@ -9,6 +9,8 @@ import Foundation
 
 class LocalizeStrings: LocalizeCommonProtocol {
 
+    fileprivate lazy var localizejson = LocalizeJson()
+    
     /// Create default lang name
     override init() {
         super.init()
@@ -70,6 +72,12 @@ class LocalizeStrings: LocalizeCommonProtocol {
             if localized != key {
                 return localized
             }
+        }
+        
+        // If any json file path is given
+        if fileURL.path.localizedCaseInsensitiveCompare(Bundle.main.bundleURL.path) != .orderedSame,
+            FileManager.default.fileExists(atPath: fileURL.path) {
+            return localizejson.localize(key: key, tableName: tableName)
         }
 
         // If we can't find a translation anywhere, return the original key.
