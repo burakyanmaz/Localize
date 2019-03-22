@@ -119,6 +119,11 @@ public class Localize: NSObject {
     public func update(bundle: Bundle) {
         provider.update(bundle: bundle)
     }
+    
+    /// Update the bundle used to load files from.
+    public func update(url: URL) {
+        provider.update(url: url)
+    }
 
     /// Update default language
     public func update(defaultLanguage: String) {

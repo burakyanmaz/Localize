@@ -73,6 +73,9 @@ public protocol LocalizeProtocol {
 
     /// Update default language
     func update(defaultLanguage: String)
+    
+    /// Update file URL
+    func update(url: URL)
 
     /// This remove the language key storaged.
     func resetLanguage()
