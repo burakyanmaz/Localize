@@ -89,6 +89,10 @@ extension Localize {
     public static func update(bundle: Bundle) {
         return Localize.shared.update(bundle: bundle)
     }
+    
+    public static func update(url: URL) {
+        return Localize.shared.update(url: url)
+    }
 
     /// Update default language
     public static func update(defaultLanguage: String) {
