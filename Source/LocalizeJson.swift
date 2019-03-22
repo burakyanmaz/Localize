@@ -175,11 +175,21 @@ class LocalizeJson: LocalizeCommonProtocol {
     ///
     /// - returns: localized key or same text
     public override func localize(key: String, tableName: String? = nil) -> String {
-        guard let json = readJSON(tableName: tableName) else {
-            return key
+        var theJson: JSON?
+        
+        if fileURL.path.localizedCaseInsensitiveCompare(Bundle.main.bundleURL.path) == .orderedSame {
+            guard let json = readJSON(tableName: tableName) else {
+                return key
+            }
+            theJson = json
+        } else {
+            guard let json = readJSONFromTheFile() else {
+                return key
+            }
+            theJson = json
         }
-
-        if let string = json.valueFor(key: key) {
+        
+        if let string = theJson?.valueFor(key: key) {
             return string
         }
 
