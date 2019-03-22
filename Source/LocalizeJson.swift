@@ -28,6 +28,25 @@ fileprivate extension JSON {
         }
         return nil
     }
+    
+    /// This method has path where file is
+    /// If can't find a path return a nil value
+    /// If can't serialize data return a nil value
+    static func read(url: URL) -> JSON? {
+        guard FileManager.default.fileExists(atPath: url.path) else {
+            return nil
+        }
+        do {
+            let data = try Data(contentsOf: url)
+            return try JSONSerialization.jsonObject(
+                with: data,
+                options: JSONSerialization.ReadingOptions.mutableContainers
+                ) as? NSDictionary
+        } catch {
+            print("Localize can't parse your file", error)
+        }
+        return nil
+    }
 
     /// Try search key in your dictionary using single level
     /// If it doesn't find the key it will use the multilevel
@@ -86,6 +105,22 @@ class LocalizeJson: LocalizeCommonProtocol {
 
         return languages
     }
+    
+    /// Show all aviable languages with criteria name
+    ///
+    /// - returns: list with storaged languages code
+    override var availableLanguagesWithinTheURL: [String] {
+        var languages: [String] = []
+        
+        for localeId in NSLocale.availableLocaleIdentifiers {
+            let name = "\(fileName)-\(localeId)"
+            if FileManager.default.fileExists(atPath: fileURL.appendingPathComponent("\(name).json").path) {
+                languages.append(localeId)
+            }
+        }
+        
+        return languages
+    }
 
     // MARK: Read JSON methods
 
@@ -109,6 +144,19 @@ class LocalizeJson: LocalizeCommonProtocol {
         }
 
         return json
+    }
+    
+    /// This metod contains a logic to read return JSON data
+    /// If JSON not is defined, this try use a default
+    /// As long as the default language is the same as the current one.
+    private func readJSONFromTheFile(tableName: String? = nil) -> JSON? {
+        let json = JSON.read(url: fileURL)
+        
+        if json != nil {
+            return json
+        }
+        
+        return self.readJSON(tableName: tableName)
     }
 
     /// Read a JSON with default language value.

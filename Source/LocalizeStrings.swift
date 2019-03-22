@@ -15,7 +15,7 @@ class LocalizeStrings: LocalizeCommonProtocol {
         fileName = "Strings"
     }
 
-    /// Show all aviable languajes whit criteria name
+    /// Show all aviable languages with criteria name
     ///
     /// - returns: list with storaged languages code
     override var availableLanguages: [String] {

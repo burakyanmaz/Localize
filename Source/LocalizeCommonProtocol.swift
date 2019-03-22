@@ -21,6 +21,13 @@ open class LocalizeCommonProtocol: LocalizeProtocol {
     open var availableLanguages: [String] {
         return ["en"]
     }
+    
+    /// Show all aviable languages with criteria name
+    ///
+    /// - returns: list with storaged languages code
+    open var availableLanguagesWithinTheURL: [String] {
+        return ["en"]
+    }
 
     /// Name for storaged Json Files
     /// The rule for name is fileName-LanguageKey.json
@@ -29,6 +36,10 @@ open class LocalizeCommonProtocol: LocalizeProtocol {
     /// Bundle used to load files from.
     /// Defaults to the main bundle.
     private var usedBundle = Bundle.main
+    
+    /// URL used to load files from.
+    /// Defaults to the main bundle's URL.
+    private var usedURL = Bundle.main.bundleURL
 
     /// Default language, if this can't find a key in your current language
     /// Try read key in default language
@@ -50,6 +61,13 @@ open class LocalizeCommonProtocol: LocalizeProtocol {
     /// - returns: a string url where is your file
     internal var bundle: Bundle {
         return usedBundle
+    }
+    
+    /// Path for your env
+    ///
+    /// - returns: a string url where is your file
+    internal var fileURL: URL {
+        return usedURL
     }
 
     // MARK: Internal methods.
@@ -102,6 +120,11 @@ open class LocalizeCommonProtocol: LocalizeProtocol {
     /// Update the bundle used to load files from.
     open func update(bundle: Bundle) {
         self.usedBundle = bundle
+    }
+    
+    /// Update the URL used to load files from.
+    open func update(url: URL) {
+        self.usedURL = url
     }
 
     // MARK: Localize methods.
